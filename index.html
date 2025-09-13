@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap: From Data Engineering to Generative AI Mastery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-300">
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00A0B0] to-[#EB6841]">From Data Engineer to AI Pioneer</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-slate-400">Your complete YouTube series roadmap for mastering Large Language Models (LLMs) and Generative AI, building directly on your data engineering skills.</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <section id="phase1">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-white">Phase 1: The Foundations</h2>
+                    <p class="text-slate-400 mt-2 max-w-2xl mx-auto">This is where we demystify the magic. We'll break down the core concepts of LLMs into simple, understandable pieces, building a solid mental foundation before we even touch advanced code.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 flex flex-col items-center text-center backdrop-blur-sm border border-slate-700">
+                        <span class="text-5xl mb-4">💬</span>
+                        <h3 class="text-xl font-bold text-[#EDC951]">Video 1: What is an LLM?</h3>
+                        <p class="text-slate-400 mt-2 flex-grow">Think of an LLM as a super-smart autocomplete. We explore how it predicts the next word in a sequence, learning from vast amounts of text.</p>
+                        <div class="chart-container w-full h-64 mt-4">
+                            <canvas id="llmConceptChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 flex flex-col items-center text-center backdrop-blur-sm border border-slate-700">
+                        <span class="text-5xl mb-4">🔢</span>
+                        <h3 class="text-xl font-bold text-[#EDC951]">Video 2: Text to Numbers</h3>
+                        <p class="text-slate-400 mt-2 flex-grow">Discover how computers understand language through tokenization and embeddings, assigning a unique numerical "fingerprint" to words.</p>
+                        <div class="mt-6 w-full flex flex-col items-center justify-center space-y-2">
+                            <div class="bg-slate-700 text-white font-mono p-3 rounded-md shadow-inner text-sm">"The cat sat"</div>
+                            <div class="text-2xl text-[#00A0B0]">↓</div>
+                            <div class="flex space-x-2">
+                                <span class="bg-slate-700 font-mono p-2 rounded-md shadow-inner text-xs">The</span>
+                                <span class="bg-slate-700 font-mono p-2 rounded-md shadow-inner text-xs">cat</span>
+                                <span class="bg-slate-700 font-mono p-2 rounded-md shadow-inner text-xs">sat</span>
+                            </div>
+                            <div class="text-2xl text-[#EB6841]">↓</div>
+                            <div class="bg-slate-700 font-mono p-3 rounded-md shadow-inner text-sm">[ [0.1, 0.9], [0.8, 0.2], [0.4, 0.6] ]</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 flex flex-col items-center text-center md:col-span-2 lg:col-span-1 backdrop-blur-sm border border-slate-700">
+                        <span class="text-5xl mb-4">⚙️</span>
+                        <h3 class="text-xl font-bold text-[#EDC951]">Video 3: The Transformer</h3>
+                        <p class="text-slate-400 mt-2 flex-grow">We'll simplify the "brain" of the LLM. Learn about the self-attention mechanism, which lets the model weigh the importance of different words in a sentence to understand context.</p>
+                         <div class="chart-container w-full h-64 mt-4">
+                            <canvas id="transformerChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase2">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-white">Phase 2: Practical Applications</h2>
+                    <p class="text-slate-400 mt-2 max-w-2xl mx-auto">Now we move from theory to practice. This phase is about interacting with LLMs and connecting them to your private data—a core task for any AI-focused data engineer.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 backdrop-blur-sm border border-slate-700">
+                        <h3 class="text-xl font-bold text-[#00A0B0] text-center">Video 4: Prompt Engineering</h3>
+                        <p class="text-slate-400 mt-2 mb-4 text-center">The art of asking the right questions. A well-crafted prompt dramatically improves the quality of the LLM's response.</p>
+                        <div class="chart-container w-full h-80">
+                            <canvas id="promptQualityChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 backdrop-blur-sm border border-slate-700">
+                        <h3 class="text-xl font-bold text-[#00A0B0] text-center">Video 5: RAG for Data Engineers</h3>
+                        <p class="text-slate-400 mt-2 mb-4 text-center">Learn Retrieval-Augmented Generation (RAG) to let LLMs access your private data securely and provide context-aware answers.</p>
+                         <div class="w-full h-80 flex flex-col items-center justify-center space-y-3 font-mono text-sm">
+                            <div class="p-3 bg-slate-900 border-2 border-[#EDC951] rounded-lg shadow-lg">User Query</div>
+                            <div class="text-2xl text-[#EB6841]">↓</div>
+                            <div class="p-3 bg-slate-900 border-2 border-slate-600 rounded-lg shadow-lg">Retrieve from Vector DB</div>
+                            <div class="text-2xl text-[#EB6841]">↓</div>
+                            <div class="p-3 bg-slate-900 border-2 border-slate-600 rounded-lg shadow-lg">[Context] + [Query]</div>
+                            <div class="text-2xl text-[#EB6841]">↓</div>
+                             <div class="p-3 bg-slate-900 border-2 border-[#00A0B0] rounded-lg shadow-lg">LLM Generates Answer</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase3">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-white">Phase 3: The Data Engineering Pipeline</h2>
+                    <p class="text-slate-400 mt-2 max-w-2xl mx-auto">This is where your existing skills shine. We'll build a full Gen AI pipeline, from data preparation and storage in specialized databases to deploying a complete application.</p>
+                </div>
+                
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 backdrop-blur-sm border border-slate-700">
+                        <h3 class="text-xl font-bold text-[#EB6841] text-center">Video 6: The Data Diet</h3>
+                        <p class="text-slate-400 mt-2 mb-4 text-center">LLMs need clean data. We'll apply data engineering principles to preprocess and clean text, ensuring optimal model performance.</p>
+                        <div class="chart-container w-full h-72">
+                            <canvas id="dataCleaningChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 backdrop-blur-sm border border-slate-700">
+                        <h3 class="text-xl font-bold text-[#EB6841] text-center">Video 7: Vector Databases</h3>
+                        <p class="text-slate-400 mt-2 mb-4 text-center">Explore the specialized databases that power semantic search and RAG, comparing them to traditional SQL databases.</p>
+                         <div class="chart-container w-full h-72">
+                            <canvas id="databaseCompareChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="bg-slate-800/50 rounded-lg shadow-lg p-6 md:col-span-2 lg:col-span-1 backdrop-blur-sm border border-slate-700">
+                        <h3 class="text-xl font-bold text-[#EB6841] text-center">Video 8: Build an App</h3>
+                        <p class="text-slate-400 mt-2 mb-4 text-center">The capstone project! We'll bring everything together to build and deploy a simple Q&A chatbot using a full RAG pipeline.</p>
+                         <div class="chart-container w-full h-72">
+                            <canvas id="appComponentsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="journey">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-white">Your Complete Learning Journey</h2>
+                     <p class="text-slate-400 mt-2 max-w-2xl mx-auto">Follow this path step-by-step to build a comprehensive understanding of how to apply your data engineering skills in the age of AI.</p>
+                </div>
+                <div class="p-6 bg-slate-800/50 rounded-lg border border-slate-700">
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="flex items-center space-x-3">
+                             <div class="flex-shrink-0 w-12 h-12 bg-[#EDC951] rounded-full flex items-center justify-center font-bold text-slate-900 text-lg">You</div>
+                             <p class="font-semibold text-white">Start Here!</p>
+                        </div>
+                        <div class="hidden md:block text-4xl text-slate-600 font-thin">→</div>
+                        <div class="block md:hidden text-4xl text-slate-600 font-thin">↓</div>
+                        <div class="p-4 bg-slate-700 rounded-lg text-center">
+                            <p class="font-bold text-white">Phase 1</p>
+                            <p class="text-xs text-slate-400">Foundations</p>
+                        </div>
+                         <div class="hidden md:block text-4xl text-slate-600 font-thin">→</div>
+                        <div class="block md:hidden text-4xl text-slate-600 font-thin">↓</div>
+                         <div class="p-4 bg-slate-700 rounded-lg text-center">
+                            <p class="font-bold text-white">Phase 2</p>
+                            <p class="text-xs text-slate-400">Applications</p>
+                        </div>
+                         <div class="hidden md:block text-4xl text-slate-600 font-thin">→</div>
+                         <div class="block md:hidden text-4xl text-slate-600 font-thin">↓</div>
+                         <div class="p-4 bg-slate-700 rounded-lg text-center">
+                            <p class="font-bold text-white">Phase 3</p>
+                            <p class="text-xs text-slate-400">Pipeline</p>
+                        </div>
+                        <div class="hidden md:block text-4xl text-slate-600 font-thin">→</div>
+                        <div class="block md:hidden text-4xl text-slate-600 font-thin">↓</div>
+                        <div class="flex items-center space-x-3">
+                             <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-[#00A0B0] to-[#EB6841] rounded-full flex items-center justify-center font-bold text-white text-lg">🚀</div>
+                             <p class="font-semibold text-white">AI Mastery!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        const wrapLabels = (label, maxLength) => {
+            if (typeof label !== 'string' || label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const energeticPalette = {
+            teal: '#00A0B0',
+            brown: '#6A4A3C',
+            red: '#CC333F',
+            orange: '#EB6841',
+            yellow: '#EDC951'
+        };
+
+        const globalChartOptions = {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#cbd5e1'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8' },
+                    grid: { color: 'rgba(100, 116, 139, 0.2)' }
+                },
+                y: {
+                    ticks: { color: '#94a3b8' },
+                    grid: { color: 'rgba(100, 116, 139, 0.2)' }
+                },
+                r: {
+                     ticks: { 
+                        color: '#94a3b8',
+                        backdropColor: 'transparent'
+                     },
+                     grid: { color: 'rgba(100, 116, 139, 0.2)' },
+                     pointLabels: {
+                         color: '#cbd5e1'
+                     },
+                     angleLines: {
+                        color: 'rgba(100, 116, 139, 0.2)'
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('llmConceptChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Pattern Recognition', 'A Bit of "Magic"'],
+                datasets: [{
+                    label: 'LLM Composition',
+                    data: [95, 5],
+                    backgroundColor: [energeticPalette.teal, energeticPalette.orange],
+                    borderColor: '#1e293b',
+                    borderWidth: 4,
+                }]
+            },
+            options: { ...globalChartOptions }
+        });
+
+        new Chart(document.getElementById('transformerChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Word Meaning', 'Sentence Flow', 'Context'],
+                datasets: [{
+                    label: 'Factors influenced by Self-Attention',
+                    data: [90, 75, 95],
+                    backgroundColor: energeticPalette.yellow,
+                    borderColor: energeticPalette.orange,
+                    borderWidth: 1,
+                }]
+            },
+            options: { ...globalChartOptions, indexAxis: 'y' }
+        });
+        
+        new Chart(document.getElementById('promptQualityChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Vague Prompt', 'Specific Prompt'],
+                datasets: [{
+                    label: 'Result Quality Score',
+                    data: [30, 95],
+                    backgroundColor: [energeticPalette.red, energeticPalette.teal],
+                    borderColor: ['#CC333F', '#00A0B0'],
+                    borderWidth: 1
+                }]
+            },
+            options: { ...globalChartOptions }
+        });
+
+        new Chart(document.getElementById('dataCleaningChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Raw Text Data', 'Cleaned Text Data'],
+                datasets: [{
+                    label: 'Useful Content',
+                    data: [70, 98],
+                    backgroundColor: energeticPalette.teal,
+                }, {
+                    label: 'Boilerplate/Noise',
+                    data: [30, 2],
+                    backgroundColor: energeticPalette.red,
+                }]
+            },
+            options: { ...globalChartOptions, scales: { x: { stacked: true }, y: { stacked: true } } }
+        });
+        
+        const dbCompareLabels = ['Semantic Search', 'Speed (Similarity)', 'Structured Query', 'Scalability (Text)'].map(l => wrapLabels(l, 16));
+        new Chart(document.getElementById('databaseCompareChart'), {
+            type: 'radar',
+            data: {
+                labels: dbCompareLabels,
+                datasets: [{
+                    label: 'Vector DB',
+                    data: [9, 8, 3, 9],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 160, 176, 0.4)',
+                    borderColor: energeticPalette.teal,
+                    pointBackgroundColor: energeticPalette.teal,
+                }, {
+                    label: 'Traditional SQL DB',
+                    data: [2, 3, 9, 6],
+                    fill: true,
+                    backgroundColor: 'rgba(235, 104, 65, 0.4)',
+                    borderColor: energeticPalette.orange,
+                    pointBackgroundColor: energeticPalette.orange,
+                }]
+            },
+            options: { ...globalChartOptions }
+        });
+        
+        new Chart(document.getElementById('appComponentsChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Data Pipeline', 'LLM Interaction', 'UI/Frontend', 'Prompt Engineering'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: [
+                        energeticPalette.teal,
+                        energeticPalette.orange,
+                        energeticPalette.yellow,
+                        energeticPalette.red
+                    ],
+                    borderColor: '#1e293b',
+                    borderWidth: 4,
+                }]
+            },
+            options: { ...globalChartOptions }
+        });
+
+    </script>
+</body>
+</html>
