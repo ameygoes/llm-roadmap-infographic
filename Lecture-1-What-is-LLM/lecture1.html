@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Text Generation Visualization - Accidental Data Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    :root {
+        --primary-color: #8a2be2; /* BlueViolet for a vibrant tech feel */
+        --accent-color: #00ffdd;   /* A bright cyan/teal for highlights */
+        --bg-color: #0f0c29;       /* Deep dark blue/purple */
+        --card-bg-color: rgba(255, 255, 255, 0.1); /* Translucent white for glass effect */
+        --text-color: #f0f2f5;     /* Light text for dark background */
+        --border-color: rgba(255, 255, 255, 0.2);
+        --footer-bg: #1c1c3c;
+        --shadow-light: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes gradient-animation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1c1c3c);
+        background-size: 400% 400%;
+        animation: gradient-animation 15s ease infinite;
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .branding-strip {
+        width: 100%;
+        background-color: rgba(0,0,0,0.2);
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 1.2em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        flex-shrink: 0;
+    }
+
+    .main-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+        width: 100%;
+        padding: 40px 20px;
+        box-sizing: border-box;
+    }
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        align-items: center;
+        justify-content: center;
+        max-width: 1400px;
+        width: 100%;
+        background: var(--card-bg-color);
+        padding: 40px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /* For Safari */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        color: var(--text-color);
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .io-container {
+        width: 380px;
+        padding: 20px;
+        box-sizing: border-box;
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        background-color: rgba(0,0,0,0.1);
+    }
+    
+    #sentence {
+        font-size: 1.4em;
+        min-height: 180px;
+        line-height: 1.6;
+        padding: 15px;
+        border: 2px dashed var(--border-color);
+        border-radius: 8px;
+        color: var(--text-color);
+        word-wrap: break-word;
+    }
+
+    .nn-container {
+        width: 380px;
+        height: 280px;
+        flex-shrink: 0;
+    }
+    .nn-svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+    .neuron {
+        transition: fill 0.3s ease-in-out, r 0.3s ease-in-out;
+    }
+    .neuron.chosen-path {
+        fill: #ffdd57;
+        stroke: #ffc107;
+    }
+    .connection {
+        stroke: rgba(255, 255, 255, 0.3);
+        stroke-width: 1.5;
+    }
+    .pulse {
+        stroke: var(--accent-color);
+        stroke-width: 3;
+        stroke-dasharray: 10 5;
+        animation: pulse-animation 1s linear forwards;
+        opacity: 0;
+    }
+    @keyframes pulse-animation {
+        0% { stroke-dashoffset: 200; opacity: 1; }
+        80% { opacity: 1; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+    .output-label {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        fill: var(--accent-color);
+    }
+    #predictions {
+        min-height: 280px;
+    }
+    .prediction {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 5px;
+        background-color: rgba(0,0,0,0.2);
+        font-weight: bold;
+        border: 1px solid transparent;
+        transition: background-color 0.2s, border-color 0.2s;
+    }
+    .prediction:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .prediction.chosen {
+        background-color: rgba(0, 255, 221, 0.2);
+        border-color: var(--accent-color);
+    }
+    .controls {
+        margin-top: 20px;
+        text-align: center;
+    }
+    button {
+        padding: 12px 25px;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 8px;
+        width: 100%;
+        transition: background-color 0.2s, transform 0.2s;
+    }
+    button:hover:not(:disabled) {
+        background-color: #9a40ff;
+        transform: translateY(-2px);
+    }
+    button:disabled {
+        background-color: #555;
+        color: #999;
+        cursor: not-allowed;
+    }
+    #temperature-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .site-footer {
+        width: 100%;
+        background-color: transparent;
+        color: var(--text-color);
+        padding: 30px 20px;
+        text-align: center;
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+    .footer-content p {
+        margin: 0 0 15px 0;
+        font-size: 0.9em;
+        opacity: 0.8;
+    }
+    .footer-content .heart {
+        color: #e25555;
+    }
+    .social-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+    }
+    .social-links a {
+        color: var(--text-color);
+        font-size: 1.5rem;
+        transition: color 0.3s, transform 0.3s;
+    }
+    .social-links a:hover {
+        color: var(--primary-color);
+        transform: scale(1.2);
+    }
+</style>
+</head>
+<body>
+
+<div class="branding-strip">Accidental Data Engineer</div>
+
+<div class="main-content">
+    <div class="container">
+        <div id="input-container" class="io-container">
+            <h2>Input Sentence</h2>
+            <div id="sentence">The quick brown fox</div>
+        </div>
+
+        <div class="nn-container">
+            <svg id="nn-svg" class="nn-svg"></svg>
+        </div>
+
+        <div id="output-container" class="io-container">
+            <h2>Predicted Next Words</h2>
+            <div id="predictions"></div>
+            <div class="controls">
+                <button id="next-word-btn">Generate Next Word</button>
+                <div id="temperature-container">
+                    <label for="temperature">Temp:</label>
+                    <input type="range" id="temperature" min="0.1" max="2" step="0.1" value="0.7">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>© 2025 Amey Bhilegaonkar. All rights reserved.</p>
+        <p>Made with <span class="heart">❤</span> in India</p>
+        <ul class="social-links">
+            <li><a href="https://www.linkedin.com/in/amey-bhilegaonkar/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://github.com/ameygoes" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://www.instagram.com/accidentaldataengineer/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="https://www.youtube.com/@ameygoes?sub_confirmation=1" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a></li>
+        </ul>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sentenceEl = document.getElementById('sentence');
+    const predictionsEl = document.getElementById('predictions');
+    const nextWordBtn = document.getElementById('next-word-btn');
+    const temperatureSlider = document.getElementById('temperature');
+    const nnSvg = document.getElementById('nn-svg');
+
+    const predictionRules = {
+        'fox': ['jumps', 'runs'], 'dog': ['sleeps', 'runs'],
+        'brown': ['fox', 'dog'], 'quick': ['brown', 'fox'],
+        'lazy': ['dog', 'fox'], 'the': ['quick', 'lazy'],
+        'jumps': ['over'], 'over': ['the'], 'default': ['the', 'and', 'a']
+    };
+
+    function getMockPredictions(inputSentence) {
+        const words = inputSentence.split(' ');
+        const lastWord = words[words.length - 1].toLowerCase();
+        const possibleNext = predictionRules[lastWord] || predictionRules['default'];
+        const vocabulary = ['jumps', 'runs', 'sleeps', 'over', 'the', 'lazy', 'dog', 'and', 'fox', 'quick', 'brown'];
+        
+        let predictions = vocabulary.map(word => ({
+            word: word,
+            probability: (possibleNext.includes(word) ? 1.0 : 0.1) + (Math.random() * 0.1)
+        }));
+        
+        const totalProb = predictions.reduce((sum, p) => sum + p.probability, 0);
+        predictions.forEach(p => p.probability /= totalProb);
+        predictions.sort((a, b) => b.probability - a.probability);
+        
+        return predictions.slice(0, 5);
+    }
+
+    const layers = [4, 6, 5];
+    const neuronRadius = 10;
+    let nnData;
+
+    function createNN() {
+        nnSvg.innerHTML = '';
+        const { width, height } = nnSvg.getBoundingClientRect();
+        if (width === 0 || height === 0) return null;
+
+        const layerGap = (width - 100) / (layers.length - 1);
+        let connections = [];
+        let neurons = [];
+
+        layers.forEach((neuronCount, layerIndex) => {
+            const x = (layerGap * layerIndex) + 40;
+            const yGap = height / (neuronCount + 1);
+            let layerNeurons = [];
+            for (let i = 0; i < neuronCount; i++) {
+                layerNeurons.push({ x, y: yGap * (i + 1), layer: layerIndex, index: i, id: `n-${layerIndex}-${i}` });
+            }
+            neurons.push(layerNeurons);
+        });
+
+        for (let i = 0; i < neurons.length - 1; i++) {
+            for (const startNeuron of neurons[i]) {
+                for (const endNeuron of neurons[i+1]) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', startNeuron.x); line.setAttribute('y1', startNeuron.y);
+                    line.setAttribute('x2', endNeuron.x); line.setAttribute('y2', endNeuron.y);
+                    line.classList.add('connection');
+                    const pulse = line.cloneNode();
+                    pulse.classList.add('pulse');
+                    pulse.style.display = 'none';
+                    connections.push({line, pulse});
+                    nnSvg.appendChild(line);
+                    nnSvg.appendChild(pulse);
+                }
+            }
+        }
+        
+        neurons.flat().forEach(neuron => {
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', neuron.x); circle.setAttribute('cy', neuron.y);
+            circle.setAttribute('r', neuronRadius);
+            circle.setAttribute('fill', 'rgba(255, 255, 255, 0.1)');
+            circle.setAttribute('stroke', 'rgba(255, 255, 255, 0.5)');
+            circle.setAttribute('stroke-width', 2.5);
+            circle.id = neuron.id; circle.classList.add('neuron');
+            nnSvg.appendChild(circle);
+
+            if (neuron.layer === layers.length - 1) {
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', neuron.x + 20); text.setAttribute('y', neuron.y + 5);
+                text.id = `output-label-${neuron.index}`;
+                text.classList.add('output-label');
+                text.textContent = '...';
+                nnSvg.appendChild(text);
+            }
+        });
+
+        return { neurons, connections };
+    }
+
+    nnData = createNN();
+
+    function animateNN() {
+        if (!nnData) return;
+        nnData.connections.forEach((conn, index) => {
+            setTimeout(() => {
+                conn.pulse.style.display = 'block';
+                conn.pulse.style.animation = 'none';
+                conn.pulse.offsetHeight;
+                conn.pulse.style.animation = null;
+            }, index * 1.5);
+        });
+
+        nnData.neurons.flat().forEach(neuron => {
+            const delay = neuron.layer * 250;
+            setTimeout(() => {
+                const circle = document.getElementById(neuron.id);
+                if (circle) {
+                    circle.style.fill = 'var(--accent-color)';
+                    setTimeout(() => { circle.style.fill = 'rgba(255, 255, 255, 0.1)'; }, 400);
+                }
+            }, delay);
+        });
+    }
+
+    function chooseNextWord(predictions, temperature) {
+        const adjustedProbs = predictions.map(p => Math.exp(Math.log(p.probability) / temperature));
+        const sumAdjustedProbs = adjustedProbs.reduce((sum, p) => sum + p, 0);
+        const finalProbs = adjustedProbs.map(p => p / sumAdjustedProbs);
+        const rand = Math.random();
+        let cumulativeProb = 0;
+        for (let i = 0; i < predictions.length; i++) {
+            cumulativeProb += finalProbs[i];
+            if (rand < cumulativeProb) {
+                return {word: predictions[i].word, index: i};
+            }
+        }
+        return {word: predictions[0].word, index: 0};
+    }
+
+    function generateNextWord() {
+        nextWordBtn.disabled = true;
+        predictionsEl.innerHTML = '<h4>Thinking...</h4>';
+        document.querySelectorAll('.output-label').forEach(el => el.textContent = '...');
+        document.querySelectorAll('.neuron').forEach(el => el.classList.remove('chosen-path'));
+        
+        animateNN();
+
+        setTimeout(() => {
+            predictionsEl.innerHTML = '';
+            const predictions = getMockPredictions(sentenceEl.textContent);
+            const temperature = parseFloat(temperatureSlider.value);
+            const chosen = chooseNextWord(predictions, temperature);
+            
+            predictions.forEach((p, index) => {
+                const label = document.getElementById(`output-label-${index}`);
+                if (label) label.textContent = p.word;
+                const predEl = document.createElement('div');
+                predEl.classList.add('prediction');
+                if (p.word === chosen.word) predEl.classList.add('chosen');
+                predEl.innerHTML = `<span>${p.word}</span><span>${(p.probability * 100).toFixed(2)}%</span>`;
+                predictionsEl.appendChild(predEl);
+            });
+
+            const chosenNeuron = document.getElementById(`n-${layers.length-1}-${chosen.index}`);
+            if (chosenNeuron) chosenNeuron.classList.add('chosen-path');
+
+            setTimeout(() => {
+                sentenceEl.textContent += ` ${chosen.word}`;
+                if (sentenceEl.textContent.split(' ').length > 20) {
+                    sentenceEl.textContent = 'The quick brown fox';
+                }
+                nextWordBtn.disabled = false;
+            }, 1000);
+        }, 1200);
+    }
+
+    nextWordBtn.addEventListener('click', generateNextWord);
+    
+    window.addEventListener('resize', () => {
+        nnData = createNN();
+    });
+});
+</script>
+
+</body>
+</html>
